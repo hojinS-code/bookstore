@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://127.0.0.1:8000/auth";
+const API_URL = "https://bookstore-kwwn.onrender.com/auth";
 
 export const registerUser = async (userData) => {
     const response = await axios.post(`${API_URL}/register`, userData);
