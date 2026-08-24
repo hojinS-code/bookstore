@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models.book import Book
 from schemas.book import BookCreate, BookUpdate, BookResponse
-from core.security import get_current_user
+from core.security import get_current_user, get_current_admin
 
 router = APIRouter(prefix="/books", tags=["books"])
 
@@ -27,7 +27,7 @@ def get_book(book_id: int, db: Session = Depends(get_db)):
     return book
 
 @router.post("/", response_model=BookResponse)
-def create_book(book: BookCreate, db: Session = Depends(get_db), current_user: str = Depends(get_current_user)):
+def create_book(book: BookCreate, db: Session = Depends(get_db), current_user = Depends(get_current_admin)):
     new_book = Book(**book.dict())
     db.add(new_book)
     db.commit()
@@ -36,7 +36,7 @@ def create_book(book: BookCreate, db: Session = Depends(get_db), current_user: s
 
 
 @router.put("/{book_id}", response_model=BookResponse)
-def update_book(book_id: int, book: BookUpdate, db: Session = Depends(get_db), current_user: str = Depends(get_current_user)):
+def update_book(book_id: int, book: BookUpdate, db: Session = Depends(get_db), current_user = Depends(get_current_admin)):
     db_book = db.query(Book).filter(Book.id == book_id).first()
     if not db_book:
         raise HTTPException(status_code=404, detail="도서를 찾을 수 없습니다")
@@ -47,7 +47,7 @@ def update_book(book_id: int, book: BookUpdate, db: Session = Depends(get_db), c
     return db_book
 
 @router.delete("/{book_id}")
-def delete_book(book_id: int, db: Session = Depends(get_db), current_user: str = Depends(get_current_user)):
+def delete_book(book_id: int, db: Session = Depends(get_db), current_user = Depends(get_current_admin)):
     db_book = db.query(Book).filter(Book.id == book_id).first()
     if not db_book:
         raise HTTPException(status_code=404, detail="도서를 찾을 수 없습니다")

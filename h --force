@@ -1,0 +1,8 @@
+[33m1e87818[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Add overdue loan restriction feature
+[33m8e410a0[m Restore API_URL to deployed address, remove temporary script
+[33mbc8b1f8[m Add loan due date and overdue dispaly
+[33m99bc5ef[m Add deployed frontend URL to CORS
+[33md0e9f7c[m Add deployed frontend URL to CORS
+[33m26b3c3a[m Read DATABSE_URL from enviroment variable
+[33m2757eab[m Add  requirements.txt 추가
+[33m497ef5a[m Initial commit: bookstore management system
