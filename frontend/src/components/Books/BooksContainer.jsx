@@ -48,7 +48,8 @@ function BooksContainer() {
             setQuantity(1);
             loadBooks();
         } catch (err) {
-            setError("ISBN이 중복되었습니다. 다른 ISBN을 입력해주세요.")
+            const message = err.response?.data?.detail || "도서 등록에 실패했습니다";
+            setError(message);
         }
     };
 
@@ -61,7 +62,8 @@ function BooksContainer() {
             await deleteBook(bookId);
             loadBooks();
         } catch (err) {
-            setError("대출 기록이 있는 도서는 삭제할 수 없습니다");
+            const message = err.response?.data?.detail || "삭제에 실패했습니다";
+            setError(message);
         }
     };
 
@@ -74,8 +76,7 @@ function BooksContainer() {
             await borrowBook(bookId);
             loadBooks();
         } catch (err) {
-            const message = err.response?.data?.detail || "대출에 실패했습니다";
-            setError(message);
+            setError("대출에 실패했습니다. 재고가 없을 수 있습니다");
         }
     };
 
@@ -100,7 +101,8 @@ function BooksContainer() {
             setEditingId(null);
             loadBooks();
         } catch (err) {
-            setError("수정에 실패했습니다");
+            const message = err.response?.data?.detail || "수정에 실패했습니다";
+            setError(message);
         }
     };
 
