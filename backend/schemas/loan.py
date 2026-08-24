@@ -10,6 +10,7 @@ class LoanResponse(BaseModel):
     book_id: int
     user_id: int
     borrowed_at: datetime
+    due_date: datetime
     returned_at: Optional[datetime] = None
     
     class Config:

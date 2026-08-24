@@ -40,6 +40,13 @@ const styles = {
         cursor: "pointer",
         fontSize: "12px",
     },
+    overdue: {
+        color: "#e74c3c",
+        fontWeight: "bold",
+    },
+    onTime: {
+        color: "#888",
+    },
     empty: {
         color: "#888",
     },
@@ -47,6 +54,8 @@ const styles = {
 
 function MyLoansPresenter({ loans, onReturn }) {
     const navigate = useNavigate();
+
+    const isOverdue = (dueDate) => new Date(dueDate) < new Date();
 
     return (
         <div style={styles.container}>
@@ -56,7 +65,14 @@ function MyLoansPresenter({ loans, onReturn }) {
             <div>
                 {loans.map((loan) => (
                     <div key={loan.id} style={styles.loanItem}>
-                        <span>대출번호 {loan.id} (책 ID: {loan.book_id})</span>
+                        <span>
+                            대출번호 {loan.id} (책 ID: {loan.book_id})
+                            <br />
+                            <span style={isOverdue(loan.due_date) ? styles.overdue : styles.onTime}>
+                                반납 기한: {new Date(loan.due_date).toLocaleDateString()}
+                                {isOverdue(loan.due_date) && " (연체됨)"}
+                            </span>
+                        </span>
                         <button onClick={() => onReturn(loan.id)} style={styles.returnButton}>반납</button>
                     </div>
                 ))}
