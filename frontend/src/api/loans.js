@@ -21,3 +21,8 @@ export const returnBook = async (loanId) => {
     const response = await axios.post(`${API_URL}/${loanId}/return`, {}, getAuthHeader());
     return response.data;
 };
+
+export const getLoanHistory = async () => {
+    const response = await axios.get(`${API_URL}/history`, getAuthHeader());
+    return response.data;
+};

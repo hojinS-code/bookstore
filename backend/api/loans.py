@@ -55,4 +55,9 @@ def return_book(loan_id: int, db: Session = Depends(get_db), current_user: str =
     book = db.query(Book).filter(Book.id == loan.book_id).first()
     book.quantity += 1
     db.commit()
-    return {"message": "반납이 완료되었습니다"} 
+    return {"message": "반납이 완료되었습니다"}
+
+@router.get("/history", response_model=list[LoanResponse])
+def loan_history(db: Session = Depends(get_db), current_user: str = Depends(get_current_user)):
+    user = db.query(User).filter(User.username == current_user).first()
+    return db.query(Loan).filter(Loan.user_id == user.id).order_by(Loan.borrowed_at.desc()).all()
