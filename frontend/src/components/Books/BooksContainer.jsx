@@ -74,7 +74,8 @@ function BooksContainer() {
             await borrowBook(bookId);
             loadBooks();
         } catch (err) {
-            setError("대출에 실패했습니다. 재고가 없을 수 있습니다");
+            const message = err.response?.data?.detail || "대출에 실패했습니다";
+            setError(message);
         }
     };
 

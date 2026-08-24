@@ -13,6 +13,15 @@ router = APIRouter(prefix="/loans", tags=["loans"])
 @router.post("/", response_model=LoanResponse)
 def borrow_book(loan: LoanCreate, db: Session = Depends(get_db), current_user: str = Depends(get_current_user)):
     user = db.query(User).filter(User.username == current_user).first()
+    
+    overdue_loan = db.query(Loan).filter(
+        Loan.user_id == user.id,
+        Loan.returned_at == None,
+        Loan.due_date < datetime.utcnow()
+    ).first()
+    if overdue_loan:
+        raise HTTPException(status_code=400, detail="연체된 도서가 있어 새로운 대출이 불가능합니다")
+    
     book = db.query(Book).filter(Book.id == loan.book_id).first()
     
     if not book:
