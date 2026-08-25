@@ -108,7 +108,7 @@ function MyLoansPresenter({ loans, onReturn, showHistory, onToggleView }) {
                 {loans.map((loan) => (
                     <div key={loan.id} style={styles.loanItem}>
                         <span>
-                            대출번호 {loan.id} (책 ID: {loan.book_id})
+                            {loan.book.title} - {loan.book.author}
                             <br />
                             {loan.returned_at ? (
                                 <span style={styles.returned}>반납 완료</span>
