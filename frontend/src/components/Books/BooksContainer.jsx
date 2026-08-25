@@ -13,6 +13,7 @@ function BooksContainer() {
     const [editingId, setEditingId] = useState(null);
     const [editQuantity, setEditQuantity] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
+    const [loading, setLoading] = useState(true);
     const isLoggedIn = !!localStorage.getItem("token");
 
     useEffect(() => {
@@ -20,8 +21,10 @@ function BooksContainer() {
     }, []);
 
     const loadBooks = async (query = "") => {
+        setLoading(true);
         const data = query ? await searchBooks(query) : await getBooks();
         setBooks(data);
+        setLoading(false);
     };
 
     const handleSearch = (e) => {
@@ -131,6 +134,7 @@ function BooksContainer() {
             onSearchQueryChange={(e) => setSearchQuery(e.target.value)}
             onSearch={handleSearch}
             onBorrow={handleBorrow}
+            loading={loading}
         />
     );
 }

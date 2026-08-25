@@ -92,13 +92,19 @@ const styles = {
         fontSize: "13px",
         marginBottom: "10px",
     },
+    loadingText: {
+        textAlign: "center",
+        color: "#888",
+        padding: "20px",
+    },
+
     error: {
         color: "red",
     },
 };
 
 function BooksPresenter({ books, title, author, isbn, quantity, onTitleChange, onAuthorChange, onIsbnChange, onQuantityChange, onSubmit, onDelete,
-    isLoggedIn, editingId, editQuantity, onEditQuantityChange, onStartEdit, onSaveEdit, onCancelEdit, searchQuery, onSearchQueryChange, onSearch, onBorrow, error }) {
+    isLoggedIn, editingId, editQuantity, onEditQuantityChange, onStartEdit, onSaveEdit, onCancelEdit, searchQuery, onSearchQueryChange, onSearch, onBorrow, loading, error }) {
     const navigate = useNavigate();
 
     return (
@@ -107,7 +113,7 @@ function BooksPresenter({ books, title, author, isbn, quantity, onTitleChange, o
             <h1 style={styles.title}>도서 목록</h1>
             {error && <p style={styles.error}>{error}</p>}
 
-            <form onSubmit={onSearch} style={{ dispaly: "flex", gap: "8px", marginBottom: "16px" }}>
+            <form onSubmit={onSearch} style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
                 <input
                     type="text"
                     placeholder="제목 또는 저자로 검색"
@@ -129,37 +135,42 @@ function BooksPresenter({ books, title, author, isbn, quantity, onTitleChange, o
             </form>
 
             <div>
-                {books.map((book) => (
-                    <div key={book.id} style={styles.bookItem}>
-                        {editingId === book.id ? (
-                            <>
-                                <span>{book.title} - {book.author} (재고: </span>
-                                <input
-                                    type="number"
-                                    value={editQuantity}
-                                    onChange={onEditQuantityChange}
-                                    style={styles.smallInput}
-                                />
-                                <span>)</span>
-                                <div>
-                                    <button onClick={() => onSaveEdit(book)} style={styles.button}>저장</button>
-                                    <button onClick={onCancelEdit} style={styles.deleteButton}>취소</button>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <span>{book.title} - {book.author} (재고: {book.quantity})</span>
-                                <div>
-                                    {book.quantity > 0 && (
-                                        <button onClick={() => onBorrow(book.id)} style={styles.borrowButton}>대출</button>
-                                    )}
-                                    <button onClick={() => onStartEdit(book)} style={styles.editButton}>수정</button>
-                                    <button onClick={() => onDelete(book.id)} style={styles.deleteButton}>삭제</button>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                ))}
+                {loading ? (
+                    <p style={styles.loadingText}>불러오는중 ...</p>
+                ) : (
+                    books.map((book) => (
+                        <div key={book.id} style={styles.bookItem}>
+                            {editingId === book.id ? (
+                                <>
+                                    <span>{book.title} - {book.author} (재고: </span>
+                                    <input
+                                        type="number"
+                                        value={editQuantity}
+                                        onChange={onEditQuantityChange}
+                                        style={styles.smallInput}
+                                    />
+                                    <span>)</span>
+                                    <div>
+                                        <button onClick={() => onSaveEdit(book)} style={styles.button}>저장</button>
+                                        <button onClick={onCancelEdit} style={styles.deleteButton}>취소</button>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <span>{book.title} - {book.author} (재고: {book.quantity})</span>
+                                    <div>
+                                        {book.quantity > 0 && (
+                                            <button onClick={() => onBorrow(book.id)} style={styles.borrowButton}>대출</button>
+                                        )}
+                                        <button onClick={() => onStartEdit(book)} style={styles.editButton}>수정</button>
+                                        <button onClick={() => onDelete(book.id)} style={styles.deleteButton}>삭제</button>
+                                    </div>
+
+                                </>
+                            )}
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );
