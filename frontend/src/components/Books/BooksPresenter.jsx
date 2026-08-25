@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const styles = {
     container: {
@@ -157,7 +157,12 @@ function BooksPresenter({ books, title, author, isbn, quantity, onTitleChange, o
                                 </>
                             ) : (
                                 <>
-                                    <span>{book.title} - {book.author} (재고: {book.quantity})</span>
+                                    <span>
+                                        <Link to={`/books/${book.id}`} style={{ color: "#333", fontWeight: "bold" }}>
+                                            {book.title}
+                                        </Link>
+                                        {" "}- {book.author} (재고: {book.quantity})
+                                    </span>
                                     <div>
                                         {book.quantity > 0 && (
                                             <button onClick={() => onBorrow(book.id)} style={styles.borrowButton}>대출</button>

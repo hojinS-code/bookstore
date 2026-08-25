@@ -16,6 +16,12 @@ export const getBooks = async () => {
 };
 
 
+export const getBook = async (bookId) => {
+    const response = await axios.get(`${API_URL}/${bookId}`);
+    return response.data;
+};
+
+
 export const createBook = async (bookData) => {
     const response = await axios.post(`${API_URL}/`, bookData, getAuthHeader());
     return response.data;
