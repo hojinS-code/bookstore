@@ -12,6 +12,11 @@ function RegisterContainer() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError("");
+        if (password.length < 5) {
+            setError("비밀번호는 5자리 이상이어야 합니다");
+            return;
+        }
         try {
             await registerUser({ username, email, password });
             navigate("/login");
